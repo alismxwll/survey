@@ -1,6 +1,7 @@
 require 'bundler/setup'
 require 'active_record'
-require 'survey'
+# require 'creator'
+
 
 Bundler.require(:default, :test)
 

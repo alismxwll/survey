@@ -6,24 +6,26 @@ ActiveRecord::Base.establish_connection(YAML::load(File.open('./db/config.yml'))
 
 @survey
 @question
+@creator
 
 def welcome
   puts "*" * 40
-  puts "Welcome!"
+  puts "You should never see this."
   puts "*" * 40
-  puts "\nThanks for stopping in today, what can I help you with?"
   main_menu
 end
 
 def main_menu
+  system("clear")
   puts "*" * 40
-  puts "main_menu"
+  puts "Welcome to the main_menu..."
   puts "*" * 40
-  puts "\nWho are you?"
-  puts "\nPress 'c' if you are a test creator."
+  puts "\nPress 'c' if you are or want to be a test creator."
   puts "\nPress 'x' to exit."
   choice = gets.chomp
   case choice
+  when 'l'
+    select_creator
   when 'c'
     puts "\nSending you to the creator menu..."
     survey_creator
@@ -34,20 +36,23 @@ def main_menu
 end
 #############################CREATOR#############################
 def survey_creator
-  puts "\nWhat would you like to do?"
+  system("clear")
   choice = nil
   until choice == 'x'
     puts "*" * 40
-    puts "survey_creator"
+    puts "Welcome to the survey_creator_menu..."
     puts "*" * 40
     puts "\nPress 'c' to add yourself as a creator."
     puts "\nPress 's' to add a new survey."
+    puts "\nPress 'l' to log in creator"
     puts "\nPress 'x' to go back to the main menu."
     choice = gets.chomp
 
     case choice
     when 'c'
       create_creator
+    when 'l'
+      select_creator
     when 's'
       create_survey
     when 'x'
@@ -58,8 +63,9 @@ def survey_creator
 end
 
 def create_creator
+  system("clear")
   puts "*" * 40
-  puts "create_creator"
+  puts "Welcome to the create_creator_menu..."
   puts "*" * 40
   puts "What is your name, creator?"
   creator_name = gets.chomp
@@ -73,24 +79,53 @@ def create_creator
   survey_creator
 end
 
-def create_survey
+def select_creator
+  system("clear")
   puts "*" * 40
-  puts "create_survey"
+  puts "Welcome to the select_creator_menu..."
   puts "*" * 40
-  puts "What would you like to call your survey?"
-  survey_name = gets.chomp
-  @survey = Survey.new(name: survey_name)
-  if @survey.save
-    puts "\n'#{survey_name}' has been created."
-  else
-    puts "\nTry again, that isn't a valid survey name."
+  puts "\nIdentify your designation number, creator."
+  puts "\nIf you don't have an account, please press 'c' to create one"
+  puts "\n"
+  creator_name_list
+  input = gets.chomp
+  @creator = Creator.all.fetch((input.to_i)-1) do |number|
+    puts"#{number + 1} is not a valid choice, booting you out..."
+    main_menu
   end
-  add_question
+  puts "Logging #{@creator.name} in..."
+  sleep(2)
+  survey_creator
+end
+
+def create_survey
+  system("clear")
+  if @creator == nil
+    puts "*" * 40
+    puts "Please, login or create an account."
+    puts "*" * 40
+    sleep(2)
+    survey_creator
+  else
+    puts "*" * 40
+    puts "Welcome to the create_survey_menu..."
+    puts "*" * 40
+    puts "Welcome #{@creator.name}, what would you like to call your survey?"
+    survey_name = gets.chomp
+    @survey = Survey.new(name: survey_name)
+    if @survey.save
+      puts "\n'#{survey_name}' has been created."
+    else
+      puts "\nTry again, that isn't a valid survey name."
+    end
+    add_question
+  end
 end
 
 def add_question
+  system("clear")
   puts "*" * 40
-  puts "add_question"
+  puts "Welcome to the add_question_menu..."
   puts "*" * 40
   puts "\nAdd a question to your survey."
   question_ = gets.chomp
@@ -115,13 +150,23 @@ def add_question
   end
 end
 
+def creator_name_list
+  Creator.all.each_with_index do  |creator, index|
+    puts "(#{index + 1}) Creator: #{creator.name}"
+  end
+end
+
+#############################TAKERS#############################
+#############################TAKERS#############################
+#############################SURVEY#############################
 def survey_name_list
   Survey.all.each_with_index do |survey, index|
     puts "(#{index + 1}) Survey: #{survey.name}"
   end
 end
-
-#############################TAKERS#############################
+#############################SURVEY#############################
+#############################   #############################
+#############################   #############################
 
 
 welcome
