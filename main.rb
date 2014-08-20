@@ -153,23 +153,46 @@ def add_question
   end
 end
 
+def multiple_choice
+  puts "Add an answer to your question."
+  answer = gets.chomp
+  @choice = Choice.new({question_id: @question, choice: answer})
+  if @choice.save
+    puts "\n'#{answer}' has been added to the '#{@survey.name}'"
+  else
+    puts "\nTry again, that wasn't valid input."
+  end
+  # if @question.choices.length < 2
+  #   puts "Please add another choice for the taker."
+  #   multiple_choice
+  else
+    puts "Do you want to add another choice? y/n"
+  choice = nil
+  until choice == 'n'
+    choice = gets.chomp
+
+    case choice
+    when 'y'
+      multiple_choice
+    when 'n'
+      puts "\nSending you to the survey creator menu..."
+      survey_creator
+  end
+
+    end
+  end
+end
+
 def creator_name_list
   Creator.all.each_with_index do  |creator, index|
     puts "(#{index + 1}) Creator: #{creator.name}"
   end
 end
 
-#############################TAKERS#############################
-#############################TAKERS#############################
-#############################SURVEY#############################
 def survey_name_list
   Survey.all.each_with_index do |survey, index|
     puts "(#{index + 1}) Survey: #{survey.name}"
   end
 end
-#############################SURVEY#############################
-#############################   #############################
-#############################   #############################
-
 
 welcome
