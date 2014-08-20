@@ -44,6 +44,7 @@ def survey_creator
     puts "*" * 40
     puts "\nPress 'c' to add yourself as a creator."
     puts "\nPress 's' to add a new survey."
+    puts "\nPress 'm' to modify a survey"
     puts "\nPress 'l' to log in creator"
     puts "\nPress 'x' to go back to the main menu."
     choice = gets.chomp

@@ -1,7 +1,5 @@
 require 'bundler/setup'
 require 'active_record'
-# require 'creator'
-
 
 Bundler.require(:default, :test)
 
