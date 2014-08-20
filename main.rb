@@ -40,11 +40,14 @@ def survey_creator
     puts "*" * 40
     puts "survey_creator"
     puts "*" * 40
-    puts "\nPress 's' to add a new survey"
+    puts "\nPress 'c' to add yourself as a creator."
+    puts "\nPress 's' to add a new survey."
     puts "\nPress 'x' to go back to the main menu."
     choice = gets.chomp
 
     case choice
+    when 'c'
+      create_creator
     when 's'
       create_survey
     when 'x'
@@ -52,6 +55,22 @@ def survey_creator
       main_menu
     end
   end
+end
+
+def create_creator
+  puts "*" * 40
+  puts "create_creator"
+  puts "*" * 40
+  puts "What is your name, creator?"
+  creator_name = gets.chomp
+  @creator = Creator.new(name: creator_name)
+  if @creator.save
+    puts "\n'#{creator_name}', you are now in our system."
+  else
+    puts "\nTry again, that is not a valid creator name."
+  end
+  puts "Sending you back the the survey creator menu..."
+  survey_creator
 end
 
 def create_survey
