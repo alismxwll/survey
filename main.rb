@@ -27,7 +27,7 @@ def main_menu
     end
   end
 end
-
+#############################CREATOR#############################
 def survey_creator
   puts "\nWhat would you like to do?"
   choice = nil
@@ -50,11 +50,22 @@ end
 def create_survey
   puts "What would you like to call your survey?"
   survey_name = gets.chomp
-  survey = Survey.new(name: survey_name)
+  @survey = Survey.new(name: survey_name)
   if survey.save
     puts "\n'#{survey_name}' has been created."
   else
     puts "Try again, that isn't a valid survey name."
   end
+  add_question
 end
-welcome
+
+def survey_name_list
+  Survey.all.each_with_index do |survey, index|
+    puts "(#{index + 1}) Survey: #{survey.name}"
+  end
+end
+
+#############################TAKERS#############################
+
+
+survey_name_list
