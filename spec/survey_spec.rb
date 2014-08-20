@@ -5,4 +5,6 @@ describe Survey do
     survey.save
     expect(survey.save).to eq false
   end
+
+  it { should have_many :questions }
 end
