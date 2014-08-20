@@ -1,37 +1,47 @@
-Dir[File.dirname(__FILE__) + './lib/*.rb'].each { |file| require file }
+require 'active_record'
+
+Dir[File.dirname(__FILE__) + '/lib/*.rb'].each { |file| require file }
 
 ActiveRecord::Base.establish_connection(YAML::load(File.open('./db/config.yml'))['development'])
 
 def welcome
-  puts "Thanks for stopping in today, what can I help you with?\n"
+  puts "\nThanks for stopping in today, what can I help you with?"
   sleep(1)
-  sign_in
+  main_menu
 end
 
 def main_menu
-  puts "Who are you?\n"
   choice = nil
   until choice == 'x'
-    puts "Press 'c' to go to the test creator menu.\n"
-
+    puts "\nWho are you?"
+    puts "\nPress 'c' if you are a test creator."
+    puts "\nPress 'x' to exit."
+    choice = gets.chomp
+    case choice
     when 'c'
+      puts "\nSending you to the creator menu..."
+      sleep(1)
       survey_creator
     when 'x'
-      puts "Have a nice life.\n"
+      puts "\nHave a nice life..."
     end
   end
 end
 
 def survey_creator
-  puts "What would you like to do?\n"
+  puts "\nWhat would you like to do?"
   choice = nil
   until choice == 'x'
-    puts "Press 's' to add a new survey\n"
+    puts "\nPress 's' to add a new survey"
+    puts "\nPress 'x' to go back to the main menu."
+    choice = gets.chomp
 
+    case choice
     when 's'
       create_survey
     when 'x'
-      puts "Sending you back to the main menu\n"
+      puts "\nSending you back to the main menu..."
+      sleep(1)
       main_menu
     end
   end
@@ -42,7 +52,7 @@ def create_survey
   survey_name = gets.chomp
   survey = Survey.new(name: survey_name)
   if survey.save
-    puts "'#{survey_name}' has been created."
+    puts "\n'#{survey_name}' has been created."
   else
     puts "Try again, that isn't a valid survey name."
   end
