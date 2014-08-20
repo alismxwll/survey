@@ -130,7 +130,7 @@ def add_question
   puts "*" * 40
   puts "\nAdd a question to your survey."
   question_ = gets.chomp
-  @question = Question.new(question: question_)
+  @question = Question.new(question: question_, survey_id: @survey.id)
   if @question.save
     puts "\n'#{question_}' has been created."
   else
@@ -138,10 +138,12 @@ def add_question
   end
   choice = nil
   until choice == 'n'
-    puts "\nWould you like to add another question? y/n"
+    puts "\nWould you like to add another question? y/n, or if you would you like to make your current question multiple choice, press 'm'?"
     choice = gets.chomp
 
     case choice
+    when 'm'
+      multiple_choice
     when 'y'
       add_question
     when 'n'
